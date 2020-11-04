@@ -1,0 +1,30 @@
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: my-deployment
+    spec:
+      replicas: 10
+      selector:
+        matchLabels:
+          app: my-app
+      strategy:
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 1
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: my-app
+        spec:
+          containers:
+            - image: myapi:latest
+              
+              imagePullPolicy:  Never 
+              name: myapi
+              ports:
+                - containerPort: 8080
+          hostAliases:
+          - ip: "192.168.0.9" # The IP of localhost from MiniKube
+            hostnames:
+            - postgres.local
